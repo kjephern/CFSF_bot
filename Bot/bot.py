@@ -1,9 +1,6 @@
 import discord
 import logging
-import os
-import tomllib
 
-from discord import app_commands
 from discord.ext import commands
 from pathlib import Path
 
