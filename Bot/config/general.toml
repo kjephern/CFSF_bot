@@ -1,0 +1,3 @@
+[bot]
+name = "bot name"
+command_prefix = ["prefix"]
