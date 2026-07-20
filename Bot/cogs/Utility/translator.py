@@ -12,38 +12,64 @@ config = get_config("translator")
 logger = logging.getLogger(__name__)
 
 
-class Translator:
+class Translator(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.command(name="zh-en")
     async def chinese_to_english(self, ctx: commands.Context, *, text: str):
-        await _process_single_translation(ctx, text, "zh-TW", "en")
+        src_lang = "zh-TW"
+        dest_lang = "en"
+        await _process_single_translation(ctx, text, src_lang, dest_lang)
 
     @commands.command(name="zh-ja")
     async def chinese_to_japanese(self, ctx: commands.Context, *, text: str):
-        await _process_single_translation(ctx, text, "zh-TW", "ja")
+        src_lang = "zh-TW"
+        dest_lang = "ja"
+        await _process_single_translation(ctx, text, src_lang, dest_lang)
 
     @commands.command(name="en-zh")
     async def english_to_chinese(self, ctx: commands.Context, *, text: str):
-        await _process_single_translation(ctx, text, "en", "zh-TW")
+        src_lang = "en"
+        dest_lang = "zh-TW"
+        await _process_single_translation(ctx, text, src_lang, dest_lang)
 
     @commands.command(name="en-ja")
     async def english_to_japanese(self, ctx: commands.Context, *, text: str):
-        await _process_single_translation(ctx, text, "en", "ja")
+        src_lang = "en"
+        dest_lang = "ja"
+        await _process_single_translation(ctx, text, src_lang, dest_lang)
 
     @commands.command(name="ja-zh")
     async def japanese_to_chinese(self, ctx: commands.Context, *, text: str):
-        await _process_single_translation(ctx, text, "ja", "zh-TW")
+        src_lang = "ja"
+        dest_lang = "zh-TW"
+        await _process_single_translation(ctx, text, src_lang, dest_lang)
 
     @commands.command(name="ja-en")
     async def japanese_to_english(self, ctx: commands.Context, *, text: str):
-        await _process_single_translation(ctx, text, "ja", "en")
+        src_lang = "ja"
+        dest_lang = "en"
+        await _process_single_translation(ctx, text, src_lang, dest_lang)
 
     @commands.command(name="tzh")
     async def translate_chinese(self, ctx: commands.Context, *, text: str):
         src_lang = "zh-TW"
-        await _process_multi_translation(ctx, text, "zh-TW")
+        await _process_multi_translation(ctx, text, src_lang)
+
+    @commands.command(name="ten")
+    async def translate_english(self, ctx: commands.Context, *, text: str):
+        src_lang = "en"
+        await _process_multi_translation(ctx, text, src_lang)
+
+    @commands.command(name="tja")
+    async def translate_japanese(self, ctx: commands.Context, *, text: str):
+        src_lang = "ja"
+        await _process_multi_translation(ctx, text, src_lang)
+
+
+async def setup(bot: commands.Bot):
+    await bot.add_cog(Translator(bot))
 
 
 async def get_or_create_webhook(channel: discord.TextChannel) -> discord.Webhook:
