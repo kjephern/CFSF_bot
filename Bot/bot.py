@@ -19,7 +19,6 @@ class Bot(commands.Bot):
     async def setup_hook(self):
         logger.info("初始化機器人中...")
         await load_all_cogs(self)
-        await self.tree.sync()
 
     async def on_ready(self):
         logger.info(f"以{self.user.name} - {self.user.id}登入")
