@@ -1,13 +1,18 @@
 import discord
+import logging
 
 from discord.ext import commands
+from pathlib import Path
 from typing import Literal, Optional
 
 
 from Bot.src.checker.permission import is_owner
+from Bot.src.util.cog import get_cog_list
+
+logger = logging.getLogger(__name__)
 
 
-class BotManage:
+class BotManage(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
@@ -70,3 +75,61 @@ class BotManage:
                 ret += 1
 
         await msg.edit(content=f"已成功將指令樹同步到 {ret}/{len(guilds)} 個伺服器。")
+
+    @commands.command(name="load_cog")
+    @commands.guild_only()
+    @commands.is_owner()
+    async def load_cog_command(self, ctx: commands.Context, *, cogs: str):
+        cog_list = get_cog_list()
+        to_load_cog = cogs.split(" ")
+        for name in to_load_cog:
+            path = cog_list.get(name)
+            if path is None:
+                continue
+            try:
+                await self.bot.load_extension(path)
+                await ctx.send(f"已載入 {name} 模組")
+                logger.info(f"已載入 {name} 模組")
+            except Exception as e:
+                await ctx.send(f"無法載入 {path}: {e}", exc_info=True)
+                logger.error(f"無法載入 {path}: {e}", exc_info=True)
+
+    @commands.command(name="unload_cog")
+    @commands.guild_only()
+    @commands.is_owner()
+    async def unload_cog_command(self, ctx: commands.Context, *, cogs: str):
+        cog_list = get_cog_list()
+        to_unload_cog = cogs.split(" ")
+        for name in to_unload_cog:
+            path = cog_list.get(name)
+            if path is None:
+                continue
+            try:
+                await self.bot.unload_extension(path)
+                await ctx.send(f"已卸載 {name} 模組")
+                logger.info(f"已卸載 {name} 模組")
+            except Exception as e:
+                await ctx.send(f"無法卸載 {path}: {e}", exc_info=True)
+                logger.error(f"無法卸載 {path}: {e}", exc_info=True)
+
+    @commands.command(name="reload_cog")
+    @commands.guild_only()
+    @commands.is_owner()
+    async def reload_cog_command(self, ctx: commands.Context, *, cogs: str):
+        cog_list = get_cog_list()
+        to_reload_cog = cogs.split(" ")
+        for name in to_reload_cog:
+            path = cog_list.get(name)
+            if path is None:
+                continue
+            try:
+                await self.bot.reload_extension(path)
+                await ctx.send(f"已重新加載 {name} 模組")
+                logger.info(f"已重新加載 {name} 模組")
+            except Exception as e:
+                await ctx.send(f"無法重新加載 {path}: {e}", exc_info=True)
+                logger.error(f"無法重新加載 {path}: {e}", exc_info=True)
+
+
+async def setup(bot: commands.Bot):
+    await bot.add_cog(BotManage(bot))

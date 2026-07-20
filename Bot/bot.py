@@ -4,7 +4,7 @@ import logging
 from discord.ext import commands
 from pathlib import Path
 
-from Bot.src.checker.permission import is_owner
+from Bot.src.util.cog import get_cog_list
 from config.config import get_config
 
 logger = logging.getLogger(__name__)
@@ -34,26 +34,10 @@ class Bot(commands.Bot):
 
 
 async def load_all_cogs(bot: commands.Bot):
-    parent_dir = Path(__file__).parent
-    base_dirs = ["cogs", "src"]
-
-    for base in base_dirs:
-        dir_path = parent_dir / base
-
-        if not dir_path.is_dir():
-            logger.warning(f"資料夾不存在: {dir_path}，已跳過。")
-            continue
-
-        for path in dir_path.iterdir():
-            is_py_file = path.is_file() and path.suffix == ".py" and path.name != "__init__.py"
-            is_cog_package = path.is_dir() and (path / "__init__.py").exists()
-
-            if is_py_file or is_cog_package:
-                module_name = path.stem if is_py_file else path.name
-                module_path = f"Bot.{base}.{module_name}"
-
-                try:
-                    await bot.load_extension(module_path)
-                    logger.info(f"已載入 {module_name} 模組")
-                except Exception as e:
-                    logger.error(f"無法載入 {module_path}: {e}", exc_info=True)
+    cogs = get_cog_list()
+    for name, path in cogs.items():
+        try:
+            await bot.load_extension(path)
+            logger.info(f"已載入 {name} 模組")
+        except Exception as e:
+            logger.error(f"無法載入 {path}: {e}", exc_info=True)
