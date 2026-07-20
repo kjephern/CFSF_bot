@@ -115,34 +115,6 @@ python main.py
 | `!unload_cog <名稱>` | 卸載指定的 Cog 模組 |
 | `!reload_cog <名稱>` | 重新載入指定的 Cog 模組 |
 
----
-
-## 專案結構
-
-```
-CFSF_bot/
-├── main.py                      # 程式進入點
-├── logging_config.py            # 日誌設定
-├── pyproject.toml               # 專案中介資料與依賴套件設定
-├── .env                         # Discord Token（請勿提交至 GitHub）
-│
-├── config/
-│   ├── config.py                # 設定檔載入器
-│   ├── general.toml             # 機器人名稱與指令前綴設定
-│   └── translator.toml          # 翻譯器設定
-│
-└── Bot/
-    ├── bot.py                   # 機器人主類別與 Cog 載入器
-    ├── cogs/
-    │   └── Utility/             # 工具類功能模組
-    │       ├── translator.py    # 翻譯指令
-    │       └── bot_manage.py    # 僅限擁有者的管理指令
-    └── src/
-        ├── checker/
-        │   └── permission.py    # 權限檢查輔助程式
-        └── util/
-            └── cog.py           # Cog 自動偵測公用程式
-```
 
 ---
 
