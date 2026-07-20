@@ -5,7 +5,7 @@ from discord.ext import commands
 from pathlib import Path
 
 from Bot.src.checker.permission import is_owner
-from Bot.src.util.config import get_config
+from config.config import get_config
 
 logger = logging.getLogger(__name__)
 
