@@ -5,7 +5,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "deep-translator>=1.11.4",
-    "discord>=2.3.2",
+    "discord-py>=2.7.1",
     "dotenv>=0.9.9",
     "logging>=0.4.9.6",
     "pathlib>=1.0.1",
