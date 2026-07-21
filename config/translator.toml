@@ -1,3 +1,4 @@
+webhook_name="translator webhook"
 supported_languages = ["ja" ,"zh-TW" ,"en"] # 多語言翻譯時的目標語言
 # language code
 # afrikaans: af

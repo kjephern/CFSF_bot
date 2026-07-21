@@ -77,11 +77,12 @@ async def get_or_create_webhook(channel: discord.TextChannel) -> discord.Webhook
     獲取頻道中現有的 Webhook，若沒有則新建一個。
     """
     webhooks = await channel.webhooks()
+    webhook_name = config["webhook_name"]
     for wh in webhooks:
-        if wh.name == "Translator":
+        if wh.name == webhook_name:
             return wh
 
-    return await channel.create_webhook(name="Translator")
+    return await channel.create_webhook(name=webhook_name)
 
 
 async def _process_single_translation(ctx: commands.Context, text: str, src_lang: str, dest_lang: str):
