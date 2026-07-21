@@ -27,10 +27,7 @@ class Bot(commands.Bot):
             logger.info(f" - {guild.name} (ID: {guild.id})")
 
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError):
-        if isinstance(error, commands.CommandNotFound):
-            return
-
-        await super().on_command_error(ctx, error)
+        return
 
 
 async def load_all_cogs(bot: commands.Bot):
