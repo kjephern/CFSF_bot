@@ -14,7 +14,7 @@ class Bot(commands.Bot):
     def __init__(self):
         self.config = get_config("general")
         prefix = self.config["bot.command_prefix"]
-        super().__init__(command_prefix=prefix, intents=discord.Intents.all())
+        super().__init__(command_prefix=prefix, intents=discord.Intents.all(), help_command=None)
 
     async def setup_hook(self):
         logger.info("初始化機器人中...")
