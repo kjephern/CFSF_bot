@@ -38,11 +38,11 @@ class BotManage(commands.Cog):
             if spec == "help":
                 help_msg = (
                     "```"
-                    + "!sync                        -> 全域同步\n"
-                    + "!sync ~                      -> 同步到『當前伺服器\n"
-                    + "!sync *                      -> 將全域指令複製並同步到『當前伺服器』\n"
-                    + "!sync ^                      -> 清除『當前伺服器』的同步指令\n"
-                    + "!sync <GuildId1> <GuildID2>  -> 同步到指定 ID 的多個伺服器\n"
+                    + "!sync      -> 全域同步\n"
+                    + "!sync ~    -> 同步到『當前伺服器\n"
+                    + "!sync *    -> 將全域指令複製並同步到『當前伺服器』\n"
+                    + "!sync ^    -> 清除『當前伺服器』的同步指令\n"
+                    + "!sync <GId>-> 同步到指定 ID 的多個伺服器\n"
                     + "```"
                 )
                 await ctx.send(content=help_msg)
@@ -129,6 +129,15 @@ class BotManage(commands.Cog):
             except Exception as e:
                 await ctx.send(f"無法重新加載 {path}: {e}", exc_info=True)
                 logger.error(f"無法重新加載 {path}: {e}", exc_info=True)
+
+    @commands.command(name="list_cogs")
+    @commands.guild_only()
+    @commands.is_owner()
+    async def list_cogs_command(self, ctx: commands.Context):
+        cog_dict = get_cog_dict()
+        name = list(cog_dict.keys())
+        context = f"## Cog List:\n> {"\n> ".join(name)}"
+        await ctx.send(context)
 
 
 async def setup(bot: commands.Bot):
