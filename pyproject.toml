@@ -1,12 +1,13 @@
 [project]
 name = "cfsf-bot"
-version = "0.2.0"
+version = "0.2.1"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "deep-translator>=1.11.4",
     "discord-py>=2.7.1",
     "dotenv>=0.9.9",
+    "emoji>=2.15.0",
     "logging>=0.4.9.6",
     "pathlib>=1.0.1",
     "python-box[toml]>=7.4.1",

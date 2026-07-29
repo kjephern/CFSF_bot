@@ -1,6 +1,8 @@
 import asyncio
 import discord
+import emoji
 import logging
+import re
 
 from deep_translator import GoogleTranslator
 from discord import app_commands
@@ -89,8 +91,9 @@ async def _process_single_translation(ctx: commands.Context, text: str, src_lang
     loading_msg = await ctx.reply("正在翻譯中，請稍候...")
 
     try:
-        translated = await asyncio.to_thread(translator, text, src_lang, dest_lang)
-        content = f"{translated}\n-# Original content: {text}"
+        clean_text = emoji_remover(text)
+        translated = await asyncio.to_thread(translator, clean_text, src_lang, dest_lang)
+        content = f"{translated}\n\n-# Original content:\n{text}"
         await send_webhook_message(content, ctx)
 
         try:
@@ -161,6 +164,34 @@ async def send_webhook_message(text: str, ctx: commands.Context):
         username=ctx.author.display_name,
         avatar_url=ctx.author.display_avatar.url,
     )
+
+
+def emoji_remover(text: str) -> str:
+    if not text:
+        return ""
+    discor_emoji_pattern = r"<a?:\w+:\d+>"
+    text = re.sub(discor_emoji_pattern, "", text)
+    text = emoji.replace_emoji(text)
+
+    text = re.sub(r"```(?:[a-zA-Z0-9_+-]+\n)?([\s\S]*?)```", r"\1", text)
+    text = re.sub(r"`([^`\n]+)`", r"\1", text)
+    text = re.sub(r"\|\|(.*?)\|\|", r"\1", text)
+    text = re.sub(r"~~(.*?)~~", r"\1", text)
+    text = re.sub(r"__(.*?)__", r"\1", text)
+    text = re.sub(r"_(.*?)_", r"\1", text)
+    text = re.sub(r"\*\*\*(.*?)\*\*\*", r"\1", text)
+    text = re.sub(r"\*\*(.*?)\*\*", r"\1", text)
+    text = re.sub(r"\*(.*?)\*", r"\1", text)
+    text = re.sub(r"\[(.*?)\]\((.*?)\)", r"\1", text)
+    text = re.sub(r"^(?:#{1,3}|-#)\s+", "", text, flags=re.MULTILINE)
+    text = re.sub(r"^(?:>>>|>)\s+", "", text, flags=re.MULTILINE)
+    text = re.sub(r"^[ \t]*(?:[-*+]\s+|\d+\.\s+)", "", text, flags=re.MULTILINE)
+    text = re.sub(r"\\([\\*_`~|#>-])", r"\1", text)
+
+    text = re.sub(r" +", " ", text)
+    text = text.strip()
+
+    return text
 
 
 def translator(text, source_lang, target_lang):
