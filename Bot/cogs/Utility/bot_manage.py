@@ -7,7 +7,7 @@ from typing import Literal, Optional
 
 
 from Bot.src.checker.permission import is_owner
-from Bot.src.util.cog import get_cog_list
+from Bot.src.util.cog import get_cog_dict
 
 logger = logging.getLogger(__name__)
 
@@ -80,10 +80,10 @@ class BotManage(commands.Cog):
     @commands.guild_only()
     @commands.is_owner()
     async def load_cog_command(self, ctx: commands.Context, *, cogs: str):
-        cog_list = get_cog_list()
+        cog_dict = get_cog_dict()
         to_load_cog = cogs.split(" ")
         for name in to_load_cog:
-            path = cog_list.get(name)
+            path = cog_dict.get(name)
             if path is None:
                 continue
             try:
@@ -98,10 +98,10 @@ class BotManage(commands.Cog):
     @commands.guild_only()
     @commands.is_owner()
     async def unload_cog_command(self, ctx: commands.Context, *, cogs: str):
-        cog_list = get_cog_list()
+        cog_dict = get_cog_dict()
         to_unload_cog = cogs.split(" ")
         for name in to_unload_cog:
-            path = cog_list.get(name)
+            path = cog_dict.get(name)
             if path is None:
                 continue
             try:
@@ -116,10 +116,10 @@ class BotManage(commands.Cog):
     @commands.guild_only()
     @commands.is_owner()
     async def reload_cog_command(self, ctx: commands.Context, *, cogs: str):
-        cog_list = get_cog_list()
+        cog_dict = get_cog_dict()
         to_reload_cog = cogs.split(" ")
         for name in to_reload_cog:
-            path = cog_list.get(name)
+            path = cog_dict.get(name)
             if path is None:
                 continue
             try:

@@ -4,10 +4,10 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-__all__ = ["get_cog_list"]
+__all__ = ["get_cog_dict"]
 
 
-def get_cog_list() -> dict:
+def get_cog_dict() -> dict:
     """
     Returns:
         dict: {name: path}

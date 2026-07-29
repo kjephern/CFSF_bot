@@ -4,7 +4,7 @@ import logging
 from discord.ext import commands
 from pathlib import Path
 
-from Bot.src.util.cog import get_cog_list
+from Bot.src.util.cog import get_cog_dict
 from config.config import get_config
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ class Bot(commands.Bot):
 
 
 async def load_all_cogs(bot: commands.Bot):
-    cogs = get_cog_list()
+    cogs = get_cog_dict()
     for name, path in cogs.items():
         try:
             await bot.load_extension(path)
